@@ -1,0 +1,50 @@
+
+{% set name = "annotated-doc" %}
+{% set version = "0.0.4" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|replace("-", "_") }}-{{ version }}.tar.gz
+  sha256: fbcda96e87e9c92ad167c2e53839e57503ecfda18804ea28102353485033faa4
+
+build:
+  number: 0
+  skip: true  # [py<38]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - pip
+    - python
+    - pdm-backend
+  run:
+    - python
+
+test:
+  source_files:
+    - tests
+  imports: 
+    - annotated_doc
+  requires:
+    - pip
+    - pytest >=8.3.5
+  commands:
+    - pip check
+    - pytest -v tests
+
+about:
+  home: https://github.com/fastapi/annotated-doc
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Document parameters, class attributes, return types, and variables inline, with Annotated.
+  description: Document parameters, class attributes, return types, and variables inline, with Annotated.
+  doc_url: https://github.com/fastapi/annotated-doc
+  dev_url: https://github.com/fastapi/annotated-doc
+
+extra:
+  recipe-maintainers:
+    - bollwyvl
